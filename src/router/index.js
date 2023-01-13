@@ -69,10 +69,10 @@ export const constantRoutes = [
         meta: { title: '学生信息', icon: 'table' }
       },
       {
-        path: 'score',
-        name: 'Score',
-        component: () => import('@/views/student/score/index'),
-        meta: { title: '成绩管理', icon: 'tree' }
+        path: 'course',
+        name: 'Course',
+        component: () => import('@/views/student/course/index'),
+        meta: { title: '开设课程', icon: 'tree' }
       }
     ]
   },

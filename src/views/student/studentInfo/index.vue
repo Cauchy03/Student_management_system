@@ -56,23 +56,37 @@
                        label="班级"
                        width="160">
       </el-table-column>
-      <el-table-column label="编辑"
-                       width="width"
-                       prop="sid">
+      <el-table-column prop="sid"
+                       label="操作"
+                       width="width">
         <template slot-scope="{row}">
-          {{row}}
+          <!-- {{row}} -->
           <el-button type="info"
                      icon="el-icon-info"
-                     size="mini"></el-button>
+                     size="mini"
+                     title="详细信息"></el-button>
           <el-button type="warning"
                      icon="el-icon-edit"
-                     size="mini"></el-button>
+                     size="mini"
+                     title="编辑"></el-button>
           <el-button type="danger"
                      icon="el-icon-delete"
-                     size="mini"></el-button>
+                     size="mini"
+                     title="删除"></el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <!-- 分页器 -->
+    <!-- @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" -->
+    <el-pagination :current-page="1"
+                   :page-sizes="[3,5,7]"
+                   :page-size="3"
+                   layout=" prev, pager, next, jumper,  ->, sizes, total"
+                   :total="15"
+                   style="margin-top:5px">
+    </el-pagination>
   </div>
 </template>
 
