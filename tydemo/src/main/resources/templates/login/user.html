@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xml:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录页</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.6.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <style>
+        b {
+            font-weight: bolder;
+            color: red;
+        }
+    </style>
+    <link rel="stylesheet" href="/plugins/bootstraptable/bootstrap-table.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="panel panel-default">
+        <div class="panel-heading"> title</div>
+        <div class="panel-body">
+
+            <form>
+                <div class="form-group">
+                    <label for="username">用户名:</label>
+                    <input type="text" class="form-control" id="username" placeholder="用户名">
+                </div>
+                <div class="form-group">
+                    <label for="password">密码:</label>
+                    <input type="password" class="form-control" id="password" placeholder="密码">
+                </div>
+                <button type="button" class="btn btn-default" onclick="login();">登录</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+<script src="/plugins/bootstraptable/bootstrap-table.js"></script>
+<script src="/plugins/bootstraptable/locale/bootstrap-table-zh-CN.js"></script>
+<script>
+    function login() {
+        let name =$('#username').val()
+        let password =$('#password').val()
+        $.ajax({
+            url:"/webapi/login/user",
+            data:{
+                username:name,
+                password:password
+            }
+        }).done(function (rs) {
+            if(rs>=0){
+                console.log(1)
+                //成功
+                window.location.href="/student/list";
+            }else {
+                alert("出错，不存在或写错")
+            }
+        })
+    }
+</script>
+</body>
+</body>
+</html>
