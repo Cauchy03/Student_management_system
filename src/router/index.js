@@ -78,14 +78,14 @@ export const constantRoutes = [
   },
 
   {
-    path: '/form',
+    path: '/teacher',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'teacherInfo',
+        name: 'teacherInfo',
+        component: () => import('@/views/teacher/index'),
+        meta: { title: '教师管理', icon: 'form' }
       }
     ]
   },
@@ -96,7 +96,7 @@ export const constantRoutes = [
     redirect: '/nested/menu1',
     name: 'Nested',
     meta: {
-      title: 'Nested',
+      title: '测试管理',
       icon: 'nested'
     },
     children: [
@@ -104,7 +104,7 @@ export const constantRoutes = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: 'Menu1' },
+        meta: { title: '测试管理1' },
         children: [
           {
             path: 'menu1-1',
@@ -144,7 +144,7 @@ export const constantRoutes = [
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         name: 'Menu2',
-        meta: { title: 'menu2' }
+        meta: { title: '测试管理2' }
       }
     ]
   },
@@ -154,8 +154,8 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
+        path: 'https://github.com/cauchy03/student_management_system',
+        meta: { title: 'Github', icon: 'link' }
       }
     ]
   },

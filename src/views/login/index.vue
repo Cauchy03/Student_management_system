@@ -124,6 +124,8 @@ export default {
           return false
         }
       })
+
+      // this.$store.dispatch('user/login')
     }
   }
 }

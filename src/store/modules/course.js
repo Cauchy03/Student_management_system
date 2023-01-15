@@ -6,7 +6,6 @@ const actions = {
   async getCourseInfo({ commit }, value) {
     try {
       let result = await reqCourseInfo(value)
-      console.log(result);
       commit('GETCOURSEINFO', result.courseInfo)
     } catch (error) {
       Message.error(error || '获取课程信息失败')

@@ -14,3 +14,13 @@ export function reqScoreInfo() {
 export function reqDeleteCourse(id) {
   return requestx({ url: `/course/${id}`, method: 'delete' })
 }
+
+// 更新课程信息
+export function reqUpdateCourse(courseInfo) {
+  return requestx({ url: '/updateCourse', method: 'post', data: { courseInfo } })
+}
+
+// 查询某个课程
+export function reqSelectOne(cname) {
+  return requestx({ url: `/selectOne/${cname}`, method: 'get' })
+}

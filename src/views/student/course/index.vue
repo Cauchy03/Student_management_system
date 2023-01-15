@@ -18,24 +18,35 @@
                    size="small"
                    @click="onSubmit">查询</el-button>
       </el-form-item>
+      <br>
+      <el-form-item label="查询课程">
+        <el-input v-model="selectCourse"
+                  placeholder="输入课程"
+                  size="small"
+                  style="width:250px"
+                  @input="selectOne"></el-input>
+        <!-- @keyup.enter.native="selectOne" -->
+      </el-form-item>
     </el-form>
 
     <el-table :data="courseInfo"
               v-loading="loading"
               style="width: 100%"
-              border>
+              border
+              :default-sort="{prop: 'cid', order: 'ascending'}">
       <el-table-column label="序号"
+                       prop="cid"
                        width="80"
                        align="center"
-                       type="index">
+                       sortable>
       </el-table-column>
       <el-table-column prop="cno"
                        label="课程编号"
-                       width="180">
+                       width="160">
       </el-table-column>
       <el-table-column prop="cname"
                        label="课程名称"
-                       width="160">
+                       width="180">
       </el-table-column>
       <el-table-column prop="tname"
                        label="任课教师"
@@ -57,7 +68,6 @@
                        width="width"
                        prop="sid">
         <template slot-scope="{row}">
-          <!-- {{row}} -->
           <el-button type="primary"
                      icon="el-icon-user-solid"
                      size="mini"
@@ -90,7 +100,7 @@
                :visible.sync="dialogTableVisible">
       <!-- :data="gridData" -->
       <el-table :data="scoreInfo"
-                v-loading="loading">
+                v-loading="stuloading">
 
         <el-table-column property="cname"
                          label="课程名称"
@@ -168,13 +178,16 @@
 </template>
 
 <script>
+//按需引入：只是把需要的功能引入进来
+import { throttle, debounce } from "lodash";//节流|防抖
 import { mapState } from 'vuex'
-import { reqScoreInfo, reqDeleteCourse } from '@/api/course';
+import { reqScoreInfo, reqDeleteCourse, reqUpdateCourse, reqSelectOne } from '@/api/course';
 export default {
   name: 'Course',
   data() {
     return {
       loading: false,//loading效果
+      stuloading: false,
       termId: undefined,//选择学期
       dialogTableVisible: false,//对话框显示与隐藏
       dialogFormVisible: false,//对话框显示与隐藏
@@ -200,7 +213,8 @@ export default {
         cscore: [
           { required: true, message: '学分不能为空', trigger: 'blur' },
         ],
-      }//表单验证规则
+      },//表单验证规则
+      selectCourse: ''
     }
   },
   computed: {
@@ -208,7 +222,9 @@ export default {
   },
   methods: {
     getDada() {
-      this.$store.dispatch('course/getCourseInfo', this.termId)
+      if (this.termId !== undefined) {
+        this.$store.dispatch('course/getCourseInfo', this.termId)
+      }
     },
     // 查询学期课程信息
     onSubmit() {
@@ -226,12 +242,14 @@ export default {
     // 查询学生信息
     async getScoreInfo() {
       this.dialogTableVisible = true
-      this.loading = true
       try {
+        this.stuloading = true
         let result = await reqScoreInfo()
         console.log(result);
         this.scoreInfo = result.scoreInfo
-        this.loading = false
+        setTimeout(() => {
+          this.stuloading = false
+        }, 300);
       } catch (error) {
         this.$message.error(error || '查询成绩信息失败')
       }
@@ -242,20 +260,38 @@ export default {
       this.dialogFormVisible = true
     },
     // 确定编辑
-    confirmUpdate(row) {
-      console.log(row);
+    async confirmUpdate(row) {
       this.dialogFormVisible = false
+      let result = await reqUpdateCourse(row)
+      if (result.code === 200) {
+        this.$message({ type: 'success', message: '修改成功' })
+        this.getDada()
+      }
     },
     // 删除课程
     async deleteCourse(id) {
       console.log(id);
       try {
         let result = await reqDeleteCourse(id)
+        this.$message({ type: 'success', message: '删除成功' })
         this.getDada()
       } catch (error) {
         this.$message.error(error || '删除课程信息失败！')
       }
-    }
+    },
+    // 查询某个课程
+    selectOne: debounce(async function () {
+      if (this.selectCourse === '') {
+        this.getDada()
+      } else {
+        let result = await reqSelectOne(this.selectCourse)
+        if (result.code === 200) {
+          this.$store.commit('course/GETCOURSEINFO', result.selectCourse)
+        } else {
+          this.$store.commit('course/GETCOURSEINFO', [])
+        }
+      }
+    }, 500)
   }
 }
 </script>
