@@ -83,7 +83,7 @@
                          icon="el-icon-info"
                          icon-color="red"
                          title="确定删除吗？"
-                         @onConfirm="deleteStu(row)">
+                         @confirm="deleteStu(row)">
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="mini"
@@ -97,14 +97,14 @@
     </el-table>
 
     <!-- 分页器 -->
-    <!-- @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" -->
-    <el-pagination :current-page="1"
+    <el-pagination :current-page="curpage"
+                   :page-size="limit"
                    :page-sizes="[3,5,7]"
-                   :page-size="3"
                    layout=" prev, pager, next, jumper,  ->, sizes, total"
-                   :total="15"
-                   style="margin-top:5px">
+                   :total="total"
+                   style="margin-top:5px"
+                   @size-change="handleSizeChange"
+                   @current-change="handleCurrentChange">
     </el-pagination>
 
     <!-- 会话框 -->
@@ -144,7 +144,7 @@
                            icon="el-icon-info"
                            icon-color="red"
                            title="确定删除吗？"
-                           @onConfirm="deleteScore(row)">
+                           @confirm="deleteScore(row)">
               <el-button type="danger"
                          size="small"
                          slot="reference">删除</el-button>
@@ -242,19 +242,21 @@ export default {
       },
       scene: 0,//0代表添加，1代表编辑
       selectedIds: [], // 所有选择的user的id的数组
+      curpage: 1,//分页器当前页数
+      limit: 3//每页大小
     }
   },
   mounted() {
     this.getStuInfo()
   },
   computed: {
-    ...mapState('stuInfo', ['stuInfo'])
+    ...mapState('stuInfo', ['stuInfo', 'total'])
   },
   methods: {
     // 获取学生数据
     getStuInfo() {
       this.loading = true
-      this.$store.dispatch('stuInfo/getStuInfo')
+      this.$store.dispatch('stuInfo/getStuInfo', { pagenum: this.curpage, pagesize: this.limit })
       setTimeout(() => {
         this.loading = false
       }, 500);
@@ -321,8 +323,8 @@ export default {
       let deleteOne = this.stuInfo.filter(item => {
         return item.sid !== row.sid
       })
-      console.log(deleteOne);
       this.$store.commit('stuInfo/GETSTUINFO', deleteOne)
+      this.$message({ type: 'success', message: '删除成功' })
     },
     // 添加学生
     addStu() {
@@ -362,7 +364,7 @@ export default {
         this.$store.commit('stuInfo/GETSTUINFO', selected)
         this.$message({
           type: 'success',
-          message: '删除成功!'
+          message: '删除成功'
         });
       }).catch(() => {
         this.$message({
@@ -370,6 +372,16 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    // 分页大小切换
+    handleSizeChange(val) {
+      this.limit = val
+      this.getStuInfo()
+    },
+    // 当前页
+    handleCurrentChange(val) {
+      this.curpage = val
+      this.getStuInfo()
     }
   }
 }

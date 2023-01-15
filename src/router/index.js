@@ -60,32 +60,40 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/student/studentInfo',
     name: 'Student',
-    meta: { title: '学生管理', icon: 'el-icon-s-help' },
+    meta: { title: '学生管理', icon: 'el-icon-user' },
     children: [
       {
         path: 'studentInfo',
         name: 'StudentInfo',
-        component: () => import('@/views/student/studentInfo/index'),
-        meta: { title: '学生信息', icon: 'table' }
+        component: () => import('@/views/student/index'),
+        meta: { title: '学生信息管理', icon: 'table' }
       },
       {
-        path: 'course',
-        name: 'Course',
-        component: () => import('@/views/student/course/index'),
-        meta: { title: '开设课程', icon: 'tree' }
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index'),
+        name: 'Menu2',
+        meta: { title: '测试管理2', icon: 'el-icon-warning' }
       }
     ]
   },
 
   {
     path: '/teacher',
+    name: 'Teacher',
     component: Layout,
+    meta: { title: '教师管理', icon: 'el-icon-user-solid' },
     children: [
       {
         path: 'teacherInfo',
         name: 'teacherInfo',
         component: () => import('@/views/teacher/index'),
-        meta: { title: '教师管理', icon: 'form' }
+        meta: { title: '教师信息管理', icon: 'form' },
+      },
+      {
+        path: 'course',
+        name: 'Course',
+        component: () => import('@/views/teacher/course/index'),
+        meta: { title: '开设课程管理', icon: 'tree' }
       }
     ]
   },
@@ -104,7 +112,7 @@ export const constantRoutes = [
         path: 'menu1',
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
-        meta: { title: '测试管理1' },
+        meta: { title: '测试管理1', icon: 'el-icon-warning' },
         children: [
           {
             path: 'menu1-1',
@@ -139,12 +147,6 @@ export const constantRoutes = [
             meta: { title: 'Menu1-3' }
           }
         ]
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        name: 'Menu2',
-        meta: { title: '测试管理2' }
       }
     ]
   },
@@ -155,7 +157,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'https://github.com/cauchy03/student_management_system',
-        meta: { title: 'Github', icon: 'link' }
+        meta: { title: 'Github地址', icon: 'link' }
       }
     ]
   },

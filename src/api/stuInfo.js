@@ -1,7 +1,7 @@
 import requestx from '@/utils/requestx'
 
-export function reqStuInfo() {
-  return requestx({ url: '/stuInfo', method: 'get' })
+export function reqStuInfo(pagenum, pagesize) {
+  return requestx({ url: '/stuInfo', method: 'post', data: { pagenum, pagesize } })
 }
 
 // 查询学生成绩信息

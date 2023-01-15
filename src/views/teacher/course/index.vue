@@ -83,7 +83,7 @@
                          icon="el-icon-info"
                          icon-color="red"
                          title="确定删除吗？"
-                         @onConfirm="deleteCourse(row.cid)">
+                         @confirm="deleteCourse(row.cid)">
             <el-button type="danger"
                        icon="el-icon-delete"
                        size="mini"
